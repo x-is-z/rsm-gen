@@ -68,8 +68,65 @@ def extract(notes):
 
   return ret * (1 / max(ret))
 
+def createModel():
+  model = keras.models.Sequential([
+    Dense(100, activation='relu', input_dim=(880 * 5)),
+    Dense(100, activation='relu'),
+    Dense(100, activation='relu'),
+    Dense(880 * 5, activation='relu'),
+  ])
+
+  model.compile(loss='mean_squared_error', optimizer='adam')
+  return model
+
+def getDataset(model, paths, numEntries):
+  xtrain = []
+  ytrain = []
+
+  audioClips = {}
+
+  for i in range(numEntries):
+    path = random.choice(paths)
+
+    if path in audioClips:
+      audio = audioClips[path]
+    else:
+      audio, sr = importFile(path)
+      audio = compress(audio, sr)
+      audioClips[path] = audio
+
+    index = int(random.random() * (len(audio) - (880 * 10)))
+    xtrain.append(audio[index : index + (880 * 5)])
+    ytrain.append(audio[index + (880 * 5) : index + (880 * 10)])
+
+  xtrain = numpy.array(xtrain)
+  ytrain = numpy.array(ytrain)
+
+  return xtrain, ytrain
+
+def fitModel(model, xtrain, ytrain, epochs=10, batchSize=32):
+  model.fit(xtrain, ytrain, epochs=epochs, batch_size=batchSize)
+
+def getRandomSeed(path):
+  audio, sr = importFile(path)
+  audio = compress(audio, sr)
+
+  index = int(random.random() * (len(audio) - (880 * 5)))
+  
+  return audio[index : index + (880 * 5)]
+
+def predict(model, seed, numContinuations):
+  audio = numpy.array([])
+  
+  for i in range(numContinuations):
+    audio = numpy.append(audio, extract(seed))
+    seed = model.predict(numpy.array([seed]))[0]
+
+  return audio
+
 def main():
   pass
 
 if __name__ == '__main__':
   main()
+  

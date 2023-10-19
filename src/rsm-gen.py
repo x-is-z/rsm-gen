@@ -40,9 +40,12 @@ def compress(clip, rate):
       a4 = 440 * (rate / 44100)
       freq = (a4 / 16) * (2 ** (i / 12))
 
-      notes.append(int((transform[int(note / 10)] / int(sr / 20)) * 256))
+      notes.append(transform[int(note / 10)])
 
-  return numpy.array(notes).astype(numpy.uint8).tobytes()
+  notes = numpy.array(notes)
+  notes *= 255 / max(notes)
+  
+  return notes.astype(numpy.int8).astype(numpy.float32)
 
 def extract(notes):
   ret = numpy.array([])
@@ -64,3 +67,9 @@ def extract(notes):
     ret = numpy.append(ret, chunk)
 
   return ret * (1 / max(ret))
+
+def main():
+  pass
+
+if __name__ == '__main__':
+  main()

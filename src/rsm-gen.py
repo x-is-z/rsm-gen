@@ -63,4 +63,4 @@ def extract(notes):
 
     ret = numpy.append(ret, chunk)
 
-  return ret
+  return ret * (1 / max(ret))

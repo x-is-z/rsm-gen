@@ -20,7 +20,7 @@ def importFile(path):
   mono = clip[0]
 
   for i in range(1, len(clip)):
-    mono += channel
+    mono += nchannels
 
   return mono, rate
 

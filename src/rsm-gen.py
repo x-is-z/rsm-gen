@@ -45,7 +45,7 @@ def compress(clip, rate):
   notes = numpy.array(notes)
   notes *= 255 / max(notes)
   
-  return notes.astype(numpy.int8).astype(numpy.float32)
+  return notes.astype(numpy.uint8).astype(numpy.float32)
 
 def extract(notes):
   ret = numpy.array([])

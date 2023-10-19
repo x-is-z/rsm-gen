@@ -79,7 +79,7 @@ def createModel():
   model.compile(loss='mean_squared_error', optimizer='adam')
   return model
 
-def getDataset(model, paths, numEntries):
+def getDataset(paths, numEntries):
   xtrain = []
   ytrain = []
 

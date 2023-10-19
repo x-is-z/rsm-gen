@@ -4,6 +4,7 @@ import keras
 import wave
 import numpy
 import math
+import random
 
 def importFile(path):
   with wave.open(path, 'rb') as f:
@@ -70,10 +71,10 @@ def extract(notes):
 
 def createModel():
   model = keras.models.Sequential([
-    Dense(100, activation='relu', input_dim=(880 * 5)),
-    Dense(100, activation='relu'),
-    Dense(100, activation='relu'),
-    Dense(880 * 5, activation='relu'),
+    keras.layers.Dense(100, activation='relu', input_dim=(880 * 5)),
+    keras.layers.Dense(100, activation='relu'),
+    keras.layers.Dense(100, activation='relu'),
+    keras.layers.Dense(880 * 5, activation='relu'),
   ])
 
   model.compile(loss='mean_squared_error', optimizer='adam')

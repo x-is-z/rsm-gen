@@ -125,7 +125,10 @@ def predict(model, seed, numContinuations):
   return audio
 
 def main():
-  pass
+  model = createModel()
+  xtrain, ytrain = getDataset(['input.wav'], 100)
+  fitModel(model, xtrain, ytrain, epochs=10, batchSize=32)
+  exportFile('output.wav', predict(model, getRandomSeed('input.wav'), 6))
 
 if __name__ == '__main__':
   main()
